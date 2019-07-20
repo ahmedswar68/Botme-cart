@@ -20,7 +20,7 @@ class OrderCart implements Cart
         $cartItem = $this->getCartItem($product);
         if (is_null($cartItem)) {
             $cart = new CartModel();
-            $cart->setItemId($product->getId());
+            $cart->setItem($product);
             $cart->setQuantity(1);
             $cart->setType(self::ORDER_CART);
             $this->em->persist($cart);
@@ -55,6 +55,6 @@ class OrderCart implements Cart
     function getCartItem($product)
     {
         $repo = $this->em->getRepository(CartModel::class);
-        return $repo->findOneBy(['item_id' => $product->getId(), 'type' => self::ORDER_CART]);
+        return $repo->findOneBy(['item' => $product, 'type' => self::ORDER_CART]);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Item;
+use App\Repository\CartRepository;
 use App\Repository\ItemRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -14,13 +15,14 @@ class HomeController extends AbstractController
     /**
      * @Route("/home", name="home")
      */
-    public function index(RegistryInterface $ri)
+    public function index(ItemRepository $repository,CartRepository $cartRepository)
     {
-        $items=new ItemRepository($ri);
-        $items=$items->getAll();
+        $orderCartItems=$cartRepository->findByCartType('order cart');
+        $items=$repository->getAll();
         return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
             'items' => $items,
+            'order_cart_items' => $orderCartItems,
+            'order_cart_count'=>count($orderCartItems)
         ]);
     }
 }

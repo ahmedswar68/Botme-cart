@@ -7,6 +7,7 @@ use App\Botme\Cart\CartImplementation;
 use App\Botme\Cart\OrderCart;
 use App\Botme\Cart\WishListCart;
 use App\Entity\Item;
+use App\Repository\CartRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,11 +16,15 @@ class CartController extends AbstractController
 {
     /**
      * @Route("/cart", name="cart")
+     * @param CartRepository $cartRepository
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index()
+    public function index(CartRepository $cartRepository)
     {
+        $orderCartItems = $cartRepository->findByCartType('order cart');
         return $this->render('cart/index.html.twig', [
-            'controller_name' => 'CartController',
+            'order_cart_items' => $orderCartItems,
+            'order_cart_count' => count($orderCartItems)
         ]);
     }
 
@@ -32,7 +37,7 @@ class CartController extends AbstractController
     {
         $orderCart = new OrderCart($em);
         $orderCart->add($item);
-        $this->addFlash('success','Your Product has been added to the Order Cart successfully ');
+        $this->addFlash('success', 'Your Product has been added to the Order Cart successfully ');
         return $this->redirectToRoute('home');
     }
 
@@ -45,7 +50,7 @@ class CartController extends AbstractController
     {
         $wishCart = new WishListCart($em);
         $wishCart->add($item);
-        $this->addFlash('success','Your Product has been added to the wish-list successfully ');
+        $this->addFlash('success', 'Your Product has been added to the wish-list successfully ');
         return $this->redirectToRoute('home');
     }
 }

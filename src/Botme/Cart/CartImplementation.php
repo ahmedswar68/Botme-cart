@@ -5,9 +5,7 @@ namespace App\Botme\Cart;
 
 
 use App\Entity\Cart as CartModel;
-use App\Repository\CartRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 abstract class CartImplementation implements Cart
 {
@@ -25,14 +23,13 @@ abstract class CartImplementation implements Cart
 
     /**
      * @param $product
-     * @param EntityManagerInterface $em
      */
     function add($product)
     {
         $cartItem = $this->getCartItem($product);
         if (is_null($cartItem)) {
             $cart = new CartModel();
-            $cart->setItemId($product->getId());
+            $cart->setItem($product);
             $cart->setQuantity(1);
             $cart->setType($this->type);
             $this->em->persist($cart);
@@ -67,7 +64,7 @@ abstract class CartImplementation implements Cart
     function getCartItem($product)
     {
         $repo = $this->em->getRepository(CartModel::class);
-        return $repo->findOneBy(['item_id' => $product->getId(), 'type' => $this->type]);
+        return $repo->findOneBy(['item' => $product, 'type' => $this->type]);
     }
 
 }

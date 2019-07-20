@@ -27,9 +27,10 @@ class Cart
     private $type;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Item", inversedBy="carts")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $item_id;
+    private $item;
 
     public function getId(): ?int
     {
@@ -60,15 +61,16 @@ class Cart
         return $this;
     }
 
-    public function getItemId(): ?int
+    public function getItem(): ?item
     {
-        return $this->item_id;
+        return $this->item;
     }
 
-    public function setItemId(int $item_id): self
+    public function setItem(?item $item): self
     {
-        $this->item_id = $item_id;
+        $this->item = $item;
 
         return $this;
     }
+
 }

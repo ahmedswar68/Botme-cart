@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,6 +37,16 @@ class Item
      * @ORM\Column(type="string", length=55)
      */
     private $type;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Cart", mappedBy="item")
+     */
+    private $carts;
+
+    public function __construct()
+    {
+        $this->carts = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -85,6 +97,37 @@ class Item
     public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Cart[]
+     */
+    public function getCarts(): Collection
+    {
+        return $this->carts;
+    }
+
+    public function addCart(Cart $cart): self
+    {
+        if (!$this->carts->contains($cart)) {
+            $this->carts[] = $cart;
+            $cart->setItem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCart(Cart $cart): self
+    {
+        if ($this->carts->contains($cart)) {
+            $this->carts->removeElement($cart);
+            // set the owning side to null (unless already changed)
+            if ($cart->getItem() === $this) {
+                $cart->setItem(null);
+            }
+        }
 
         return $this;
     }
