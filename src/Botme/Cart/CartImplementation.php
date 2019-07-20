@@ -6,13 +6,13 @@ namespace App\Botme\Cart;
 
 use Doctrine\ORM\EntityManagerInterface;
 
-abstract class CartImplementation //implements Cart
+abstract class CartImplementation implements Cart
 {
     /**
      * @param $product
      * @param EntityManagerInterface $em
      */
-    function add($product,EntityManagerInterface $em)
+    function add($product)
     {
 
     }
@@ -32,10 +32,14 @@ abstract class CartImplementation //implements Cart
         // TODO: Implement emptyCart() method.
     }
 
-    function listItems(EntityManagerInterface $em)
+    function listItems()
     {
         // TODO: Implement listItems() method.
     }
 
+    function getCartItem($product)
+    {
+        // TODO: Implement getCartItem() method.
+    }
 
 }
