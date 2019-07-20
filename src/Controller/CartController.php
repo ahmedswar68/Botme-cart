@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Botme\Cart\Cart;
 use App\Botme\Cart\CartImplementation;
 use App\Botme\Cart\OrderCart;
+use App\Botme\Cart\WishListCart;
 use App\Entity\Item;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,13 +13,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CartController extends AbstractController
 {
-    private $cart;
-
-    public function __construct()
-    {
-//        die('fffff');
-//        $this->cart = $cart;
-    }
 
     /**
      * @Route("/cart", name="cart")
@@ -49,5 +43,8 @@ class CartController extends AbstractController
      */
     public function addToWishList(Item $item, EntityManagerInterface $em)
     {
+        $wishCart = new WishListCart($em);
+        $wishCart->add($item);
+        return $this->redirectToRoute('home');
     }
 }

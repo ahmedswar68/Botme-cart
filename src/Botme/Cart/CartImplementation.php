@@ -4,17 +4,41 @@
 namespace App\Botme\Cart;
 
 
+use App\Entity\Cart as CartModel;
 use Doctrine\ORM\EntityManagerInterface;
 
 abstract class CartImplementation implements Cart
 {
+    private $em;
+    public $type;
+
+    /**
+     * CartImplementation constructor.
+     * @param EntityManagerInterface $em
+     */
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
+
     /**
      * @param $product
      * @param EntityManagerInterface $em
      */
     function add($product)
     {
-
+        $cartItem = $this->getCartItem($product);
+        if (is_null($cartItem)) {
+            $cart = new CartModel();
+            $cart->setItemId($product->getId());
+            $cart->setQuantity(1);
+            $cart->setType($this->type);
+            $this->em->persist($cart);
+            $this->em->flush();
+        } else {
+            $cartItem->setQuantity($cartItem->getQuantity() + 1);
+            $this->em->flush();
+        }
     }
 
     function update($productId, $quantity)
@@ -34,12 +58,14 @@ abstract class CartImplementation implements Cart
 
     function listItems()
     {
-        // TODO: Implement listItems() method.
+        $repo = $this->em->getRepository(CartModel::class);
+        return $repo->findBy(['type' => $this->type]);
     }
 
     function getCartItem($product)
     {
-        // TODO: Implement getCartItem() method.
+        $repo = $this->em->getRepository(CartModel::class);
+        return $repo->findOneBy(['item_id' => $product->getId(), 'type' => $this->type]);
     }
 
 }
