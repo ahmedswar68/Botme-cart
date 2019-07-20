@@ -5,7 +5,9 @@ namespace App\Botme\Cart;
 
 
 use App\Entity\Cart as CartModel;
+use App\Repository\CartRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 abstract class CartImplementation implements Cart
 {
