@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello Botme!{% endblock %}
+
+{% block body %}
+<div class="container products">
+    <div class="row">
+        {% for item in items %}
+        <div class="col-xs-18 col-sm-6 col-md-3">
+            <div class="thumbnail">
+                <img src="{{ asset('images/1.png') }}" width="500" height="300">
+                <div class="caption">
+                    <h4>{{ item.name }}</h4>
+                    <p>{{ item.description |slice(0, 20)}} ...</p>
+                    <p><strong>Price: </strong> {{ item.price }}$</p>
+                    <p class="btn-holder">
+                        <a href="{{ path('add-to-order-cart',{ id:item.id}) }}"
+                           class="btn btn-warning btn-block text-center " role="button">
+                            Add to Cart
+                        </a>
+                        <a href="{{ path('add-to-wishlist-cart',{ id:item.id}) }}"
+                           class="btn btn-dark btn-block text-center" role="button">
+                            Add to Wish-list
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div><!-- End row -->
+</div>
+{% endblock %}
