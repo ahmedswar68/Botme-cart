@@ -3,9 +3,11 @@
 namespace App\Botme\Cart;
 
 
+use Doctrine\ORM\EntityManagerInterface;
+
 interface Cart
 {
-    function add($product);
+    function add($product,EntityManagerInterface $em);
 
     function update($productId, $quantity);
 
@@ -13,5 +15,5 @@ interface Cart
 
     function emptyCart();
 
-    function listItems();
+    function listItems(EntityManagerInterface $em);
 }

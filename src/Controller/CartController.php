@@ -14,9 +14,10 @@ class CartController extends AbstractController
 {
     private $cart;
 
-    public function __construct(CartImplementation $cart)
+    public function __construct()
     {
-        $this->cart = $cart;
+//        die('fffff');
+//        $this->cart = $cart;
     }
 
     /**
@@ -37,7 +38,8 @@ class CartController extends AbstractController
     public function addToOrderCart(Item $item, EntityManagerInterface $em)
     {
         $orderCart = new OrderCart();
-        $orderCart->add($item);
+        $orderCart->add($item,$em);
+        return $this->redirectToRoute('home');
     }
 
     /**
@@ -47,11 +49,5 @@ class CartController extends AbstractController
      */
     public function addToWishList(Item $item, EntityManagerInterface $em)
     {
-        if (is_null($item)) {
-            die;
-        }
-        echo "<pre>";
-        var_dump($item);
-        die;
     }
 }
