@@ -13,7 +13,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CartController extends AbstractController
 {
-
     /**
      * @Route("/cart", name="cart")
      */
@@ -33,6 +32,7 @@ class CartController extends AbstractController
     {
         $orderCart = new OrderCart($em);
         $orderCart->add($item);
+        $this->addFlash('success','Your Product has been added to the Order Cart successfully ');
         return $this->redirectToRoute('home');
     }
 
@@ -45,6 +45,7 @@ class CartController extends AbstractController
     {
         $wishCart = new WishListCart($em);
         $wishCart->add($item);
+        $this->addFlash('success','Your Product has been added to the wish-list successfully ');
         return $this->redirectToRoute('home');
     }
 }

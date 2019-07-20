@@ -56,6 +56,22 @@
         </div>
     </div>
 </div>
+<div class="container page">
+    {% for message in app.flashes('success') %}
+    <div class="alert alert-success alert-block">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>{{ message }}</strong>
+    </div>
+    {% endfor %}
+
+    {% for message in app.flashes('error') %}
+    <div class="alert alert-danger alert-block">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>{{ message }}</strong>
+    </div>
+    {% endfor %}
+
+</div>
 {% block body %}{% endblock %}
 {% block javascripts %}{% endblock %}
 </body>
