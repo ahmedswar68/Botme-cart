@@ -8,20 +8,26 @@ use Doctrine\ORM\EntityManagerInterface;
 class OrderCart implements Cart
 {
     const ORDER_CART = 'order cart';
+    private $em;
 
-    function add($product, EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em)
     {
-        $cartItem = $this->getCartItem($product, $em);
+        $this->em = $em;
+    }
+
+    function add($product)
+    {
+        $cartItem = $this->getCartItem($product);
         if (is_null($cartItem)) {
             $cart = new CartModel();
             $cart->setItemId($product->getId());
             $cart->setQuantity(1);
             $cart->setType(self::ORDER_CART);
-            $em->persist($cart);
-            $em->flush();
+            $this->em->persist($cart);
+            $this->em->flush();
         } else {
             $cartItem->setQuantity($cartItem->getQuantity() + 1);
-            $em->flush();
+            $this->em->flush();
         }
     }
 
@@ -40,15 +46,15 @@ class OrderCart implements Cart
         // TODO: Implement emptyCart() method.
     }
 
-    function listItems(EntityManagerInterface $em)
+    function listItems()
     {
-        $repo = $em->getRepository(CartModel::class);
+        $repo = $this->em->getRepository(CartModel::class);
         return $repo->findBy(['type' => self::ORDER_CART]);
     }
 
-    private function getCartItem($product, EntityManagerInterface $em)
+    function getCartItem($product)
     {
-        $repo = $em->getRepository(CartModel::class);
+        $repo = $this->em->getRepository(CartModel::class);
         return $repo->findOneBy(['item_id' => $product->getId(), 'type' => self::ORDER_CART]);
     }
 }

@@ -6,7 +6,7 @@ namespace App\Botme\Cart;
 
 use Doctrine\ORM\EntityManagerInterface;
 
-abstract class CartImplementation implements Cart
+abstract class CartImplementation //implements Cart
 {
     /**
      * @param $product

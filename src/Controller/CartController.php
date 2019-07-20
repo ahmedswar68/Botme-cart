@@ -37,8 +37,8 @@ class CartController extends AbstractController
      */
     public function addToOrderCart(Item $item, EntityManagerInterface $em)
     {
-        $orderCart = new OrderCart();
-        $orderCart->add($item,$em);
+        $orderCart = new OrderCart($em);
+        $orderCart->add($item);
         return $this->redirectToRoute('home');
     }
 
