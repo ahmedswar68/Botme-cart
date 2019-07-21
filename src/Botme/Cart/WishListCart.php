@@ -4,5 +4,10 @@ namespace App\Botme\Cart;
 
 class WishListCart extends CartImplementation
 {
-  public $type ='wish-list';
+    private $type = 'wish-list';
+
+    function cartType()
+    {
+        return $this->type;
+    }
 }

@@ -4,5 +4,11 @@ namespace App\Botme\Cart;
 
 class OrderCart extends CartImplementation
 {
-    public $type = 'order cart';
+    private $type = 'order cart';
+
+    function cartType()
+    {
+        return $this->type;
+    }
+
 }

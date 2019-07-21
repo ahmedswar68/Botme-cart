@@ -67,4 +67,5 @@ abstract class CartImplementation implements Cart
         return $repo->findOneBy(['item' => $product, 'type' => $this->type]);
     }
 
+    abstract function cartType();
 }
